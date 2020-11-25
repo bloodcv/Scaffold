@@ -1,0 +1,5 @@
+{
+  "terminal.integrated.env.linux": {
+    "LC_ALL": "zh_CN.UTF-8"
+  }
+}
