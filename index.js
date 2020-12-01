@@ -8,7 +8,6 @@ const inquirer = require('inquirer');
 const ora = require('ora');
 const chalk = require('chalk');
 const symbols = require('log-symbols');
-const content = fs.readFileSync('template/package.json').toString();
 
 const runProject = async (name) => {
 	try {
@@ -91,7 +90,6 @@ const initProject = (name, answers) => {
 				const content = fs.readFileSync(fileName).toString();
 				const result = handlebars.compile(content)(meta);
 				// 初始化package-init覆盖package
-				console.log(`${name}/package.json`)
 				fs.copy(fileName, `${name}/package.json`)
 					.then(() => {
 						// 修改package
@@ -121,7 +119,7 @@ const initProject = (name, answers) => {
 	})
 }
 
-program.version(JSON.parse(content).version, '-v, --version')
+program.version(JSON.parse(fs.readFileSync('package.json').toString()).version, '-v, --version')
 	.command('init <name>')
 	.action(async (name) => {
 		// 项目存在
