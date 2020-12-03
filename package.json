@@ -1,0 +1,42 @@
+{
+  "name": "npmts",
+  "version": "1.0.0",
+  "description": "脚手架项目 npm下是脚手架脚本 其他对应分支下是相应的模版",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bloodcv/Scaffold.git"
+  },
+  "bin": {
+    "saya": "./bld/bin/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bloodcv/Scaffold/issues"
+  },
+  "homepage": "https://github.com/bloodcv/Scaffold#readme",
+  "dependencies": {
+    "@types/commander": "^2.12.2",
+    "@types/inquirer": "^7.3.1",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "chalk": "^4.1.0",
+    "commander": "^6.2.0",
+    "download-git-repo": "^3.0.2",
+    "inquirer": "^7.3.3",
+    "ora": "^5.1.0",
+    "typescript": "^4.0.5"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.2.1",
+    "tslint": "^6.1.3"
+  }
+}
