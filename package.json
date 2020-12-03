@@ -4,14 +4,19 @@
   "description": "脚手架项目 npm下是脚手架脚本 其他对应分支下是相应的模版",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "eslint": "eslint src --ext .ts",
+    "fix": "eslint . --fix",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bloodcv/Scaffold.git"
   },
   "bin": {
-    "saya": "./bld/bin/main.js"
+    "saya": "./lib/bin/main.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +24,9 @@
   "bugs": {
     "url": "https://github.com/bloodcv/Scaffold/issues"
   },
+  "files": [
+    "lib/**/*"
+  ],
   "homepage": "https://github.com/bloodcv/Scaffold#readme",
   "dependencies": {
     "@types/commander": "^2.12.2",
@@ -34,6 +42,7 @@
     "typescript": "^4.0.5"
   },
   "devDependencies": {
+    "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "prettier": "^2.2.1",

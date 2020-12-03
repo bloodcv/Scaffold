@@ -66,9 +66,11 @@
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
+  // 指定要编译的目录
   "include": [
     "src/**/*.ts"
   ],
+  // 指定不编译的目录
   "exclude": [
     "node_modules"
   ]
