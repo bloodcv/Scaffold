@@ -10,11 +10,10 @@ import {
 	branchNodeConf,
 	branchPythonConf,
 	branchTypescriptConf,
-	url,
-	Answers
+	url
 } from '../config/setting'
 
-const spinner = ora('Downloading please wait......')
+const spinner: ora.Ora = ora('Downloading please wait......')
 const option: string = command.parse(process.argv).args[0]
 const defaultName: string = typeof option === 'string' ? option : 'My-project'
 const questionList: unknown[] = [
@@ -71,7 +70,7 @@ const questionList: unknown[] = [
 ]
 
 // ts的泛型(重点了解)
-inquirer.prompt<Answers>(questionList).then(answers => {
+inquirer.prompt<UserSrch.Answers>(questionList).then(answers => {
 	const answer = answers['Project name']
 	const type = answers['language type']
 	if (type === 'nodejs') {

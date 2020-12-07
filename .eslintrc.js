@@ -12,7 +12,14 @@ module.exports = {
 		browser: true,
 		node: true
 	},
+	globals: {
+		UserSrch: 'writable',
+		SayaSpace: 'writable',
+		'download-git-repo': 'writable'
+	},
 	rules: {
+		'@typescript-eslint/no-var-requires': 0, // 不允许var let const 引入require
+		'@typescript-eslint/no-explicit-any': 0, // 不希望类型定义为any, 类型定义为any的时候报错
 		'comma-dangle': ['error', 'never'], // 是否允许对象中出现结尾逗号
 		'no-cond-assign': 2, // 条件语句的条件中不允许出现赋值运算符
 		'no-console': 0, // 不允许出现console语句
@@ -98,7 +105,7 @@ module.exports = {
 		'no-self-compare': 2, // 不允许自己和自己比较
 		'no-sequences': 2, // 不允许使用逗号表达式
 		'no-throw-literal': 2, // 不允许抛出字面量错误 throw "error"
-		'no-unused-expressions': 2, // 不允许无用的表达式
+		'no-unused-expressions': 0, // 不允许无用的表达式
 		'no-void': 2, // 不允许void操作符
 		'no-warning-comments': [0, { terms: ['todo', 'fixme', 'any other term'] }], // 不允许警告备注
 		'no-with': 2, // 不允许使用with语句

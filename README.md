@@ -1,18 +1,26 @@
 # Scaffold
-脚手架项目
-npm下是脚手架脚本
-其他对应分支下是相应的模版
+### 脚手架项目
+- ##### npm下是脚手架脚本
+- ##### 其他对应分支下是相应的模版
+
+---
 
 ### npmts 基础架构
 - src	(ts代码文件)
 	- bin	(程序入口文件)
 		- main.js
 	- commands	(程序逻辑文件)
+		- saya	(脚本名)
+			- index.ts	(脚本主执行文件)
+			- inquirers.ts	(脚本命令行询问声明文件)
+			- methods.ts	(脚本内使用方法)
 		- init.js
 	- config	(项目共用变量)
 		- setting.ts
 	- types	(存储声明文件)
-		- downloads.d.ts
+		- **.d.ts
+
+---
 
 ### 提交类型
 
@@ -30,3 +38,5 @@ npm下是脚手架脚本
 | build  | b   | 项目构建相关 |
 | chore  | c   | 与构建配置相关 |
 | other  | o   | 其他修改 |
+
+---
