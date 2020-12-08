@@ -20,7 +20,7 @@ command
 	.description('Generate a new my project')
 	.alias('i')
 	.action((name: string) => {
-		require(res('saya/index'))(name)
+		require(res('cli/index'))(name)
 	})
 
 command
@@ -28,7 +28,7 @@ command
 	.description('command test')
 	.alias('qt')
 	.action(() => {
-		require(res('test/index'))
+		require(res('qtest/index'))
 	})
 
 command.parse(process.argv)
