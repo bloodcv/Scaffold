@@ -12,3 +12,12 @@ declare module 'download-git-repo' {
 	): void
 	export = download
 }
+
+declare namespace UserSrch {
+	interface Answers {
+		'Project name': string
+		description: string
+		author: string
+		'language type': string
+	}
+}
