@@ -9,7 +9,9 @@ const res = (command: string) =>
 	path.resolve(__dirname, '../commands/', command)
 
 command.version(
-	JSON.parse(fs.readFileSync('package.json').toString()).version,
+	JSON.parse(
+		fs.readFileSync(path.resolve(__dirname, '../../package.json')).toString()
+	).version,
 	'-v, --version'
 )
 
