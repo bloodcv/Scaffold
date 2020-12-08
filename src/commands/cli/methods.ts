@@ -37,7 +37,7 @@ const installAct = async (name: string): Promise<any> => {
 					console.log(symbols.error, chalk.red(`*** 运行出错 ***`))
 					shell.exit(1)
 				} else {
-					shell.cd('..')
+					// shell.cd('..')
 				}
 			} catch (err) {
 				console.log(symbols.error, chalk.red(`*** 运行出错 ***: ${err}`))
