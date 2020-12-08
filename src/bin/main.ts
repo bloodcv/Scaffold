@@ -18,7 +18,7 @@ command.version(
 command.usage('<command>')
 
 command
-	.command('init <name>')
+	.command('cli <name>')
 	.description('Generate a new my project')
 	.alias('i')
 	.action((name: string) => {
