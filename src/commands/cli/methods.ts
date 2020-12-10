@@ -8,6 +8,7 @@ import chalk from 'chalk'
 import symbols from 'log-symbols'
 import { initInquire } from './inquirer'
 
+// 执行install命令
 const installAct = async (name: string): Promise<any> => {
 	try {
 		const installAnswers = await inquirer.prompt([
@@ -17,6 +18,7 @@ const installAct = async (name: string): Promise<any> => {
 				name: 'install'
 			}
 		])
+		// 确定执行install
 		if (installAnswers.install) {
 			try {
 				const answers = await inquirer.prompt([
@@ -27,16 +29,21 @@ const installAct = async (name: string): Promise<any> => {
 						choices: ['npm', 'cnpm', 'yarn']
 					}
 				])
+				// 进入项目文件夹
 				shell.cd(name)
-				shell.exec('ls')
+				// shell.exec('ls')
+				// 获取执行方式
 				let code = answers.type
+				// npm 和 cnpm需要增加install
 				if (answers.type === 'npm' || answers.type === 'cnpm') {
 					code += ' install'
 				}
+				// 执行命令
 				if (shell.exec(code).code !== 0) {
 					console.log(symbols.error, chalk.red(`*** 运行出错 ***`))
 					shell.exit(1)
 				} else {
+					// 打开这个会因为跳出执行目录而造成install失败，后续不操作shell可注释
 					// shell.cd('..')
 				}
 			} catch (err) {
@@ -48,6 +55,7 @@ const installAct = async (name: string): Promise<any> => {
 	}
 }
 
+// 拉取git上的初始化项目模版
 const initProject = (name: string, answers: SayaSpace.InitAnswer): void => {
 	const spinner = ora(`正在创建 ${name}...`)
 	spinner.start()
@@ -61,17 +69,21 @@ const initProject = (name: string, answers: SayaSpace.InitAnswer): void => {
 				spinner.fail()
 				console.log(symbols.error, chalk.red(`*** 运行出错 ***: ${err}`))
 			} else {
+				// 项目模板中的配置用的package-init
 				const fileName = `${name}/package-init.json`
+				// 获取用户选择的配置项
 				const meta = { name, ...answers }
+				// 初始化package-init存在
 				if (fs.existsSync(fileName)) {
-					// 初始化package-init存在
+					// 读取package-init.json文件
 					const content = fs.readFileSync(fileName).toString()
+					// 将用户选择的配置项对配置文件进行改写
 					const result = handlebars.compile(content)(meta)
-					// 初始化package-init覆盖package
+					// 使用初始化package-init覆盖原始package
 					fs.copy(fileName, `${name}/package.json`)
 						.then(() => {
-							// 修改package
 							try {
+								// 开始覆盖
 								fs.writeFileSync(`${name}/package.json`, result)
 								// 删除package-init
 								fs.remove(fileName).then(() => {
@@ -109,7 +121,7 @@ export const runProject = async (name: string): Promise<any> => {
 	}
 }
 
-// 项目存在的时候
+// 项目存在的时候执行删除重建
 export const hasPro = async (name: string): Promise<any> => {
 	try {
 		const answers = await inquirer.prompt([
@@ -122,6 +134,7 @@ export const hasPro = async (name: string): Promise<any> => {
 		])
 		// 删除项目并重建
 		if (answers.reCreate) {
+			// 删除已存在的项目
 			fs.remove(`${name}`)
 				.then(() => {
 					console.log(symbols.success, chalk.blue('*** 删除完成 ***'))
