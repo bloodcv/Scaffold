@@ -16,11 +16,11 @@ program.parse(process.argv) */
 
 // name是要创建的项目名称
 module.exports = (name: string) => {
-	// 项目存在
-	if (fs.existsSync(name)) {
-		hasPro(name)
-	} else {
-		// 项目不存在
-		runProject(name)
-	}
+  // 项目存在
+  if (fs.existsSync(name)) {
+    hasPro(name)
+  } else {
+    // 项目不存在
+    runProject(name)
+  }
 }
