@@ -18,37 +18,38 @@
 
 ### npmts 基础架构
 
-    ```
-    ├─ .vscode
-    │  └─ settings.json
-    ├─ src (ts代码文件)
-    │  ├─ bin (程序入口文件)
-    │  │  └─ main.ts
-    │  ├─ commands (程序逻辑文件)
-    │  │  ├─ cli (脚本名)
-    │  │  │  ├─ index.ts (脚本主执行文件)
-    │  │  │  ├─ inquirer.ts (脚本命令行询问声明文件)
-    │  │  │  └─ methods.ts (脚本内使用方法)
-    │  │  └─ ... (脚本名)
-    │  │     └─ index.ts (脚本主执行文件)
-    │  │     └─ inquirer.ts (脚本命令行询问声明文件)
-    │  │     └─ methods.ts  (脚本内使用方法)
-    │  ├─ config (项目共用变量)
-    │  │  └─ setting.ts
-    │  └─ types (存储声明文件)
-    │     ├─ **.d.ts
-    │     └─ types.d.ts
-    ├─ .editorconfig
-    ├─ .eslintignore
-    ├─ .eslintrc.js
-    ├─ .gitignore
-    ├─ .prettierrc.js
-    ├─ package.json
-    ├─ tsconfig.json
-    ├─ tslint.json
-    └─ yarn.lock
-    ├─ README.md
-    ```
+  ```
+  ├─ .vscode
+  │  └─ settings.json
+  ├─ src (ts代码文件)
+  │  ├─ bin (程序入口文件)
+  │  │  └─ main.ts
+  │  ├─ commands (程序逻辑文件)
+  │  │  ├─ cli (脚本名)
+  │  │  │  ├─ index.ts (脚本主执行文件)
+  │  │  │  ├─ inquirer.ts (脚本命令行询问声明文件)
+  │  │  │  └─ methods.ts (脚本内使用方法)
+  │  │  └─ ... (脚本名)
+  │  │     └─ index.ts (脚本主执行文件)
+  │  │     └─ inquirer.ts (脚本命令行询问声明文件)
+  │  │     └─ methods.ts  (脚本内使用方法)
+  │  ├─ config (项目共用变量)
+  │  │  └─ setting.ts
+  │  └─ types (存储声明文件)
+  │     ├─ **.d.ts
+  │     └─ types.d.ts
+  ├─ .editorconfig
+  ├─ .eslintignore
+  ├─ .eslintrc.js
+  ├─ .gitignore
+  ├─ .prettierrc.js
+  ├─ package.json
+  ├─ tsconfig.json
+  ├─ tslint.json
+  ├─ README.md
+  └─ yarn.lock
+
+  ```
 ---
 
 ### 提交类型
