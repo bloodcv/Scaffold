@@ -1,5 +1,7 @@
 declare namespace PbsxSpace {
-  interface toDo {
-    todo: string
+  interface publishInfo {
+    pbEnv: string
+    pbVersion: string
+    pbDesc: string
   }
 }

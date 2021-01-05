@@ -19,26 +19,35 @@ command.version(
 // 信息的首行提示
 command.usage('<command>')
 
-// 引入cli命令
+// 引入 cli 命令: 搭建脚手架
 command
   .command('cli <name>')
   .description('Generate a new my project')
   .alias('i')
   .action((name: string) => {
-    // 引入cli命令入口文件并执行
+    // 引入 cli 命令入口文件并执行
     require(res('cli/index'))(name)
   })
 
-// 引入qtest命令
+// 引入 qtest 命令: 测试命令
 command
   .command('qtest')
-  .description('command test')
+  .description('Command test')
   .alias('qt')
   .action(() => {
-    // 引入qtest命令入口文件并执行
+    // 引入 qtest 命令入口文件并执行
     require(res('qtest/index'))
   })
 
+// 引入 pbsx 命令: 小程序自动部署
+command
+  .command('pbsx')
+  .description('Publish a new applets version')
+  .alias('px')
+  .action(() => {
+    // 引入 pbsx 命令入口文件并执行
+    require(res('pbsx/index'))()
+  })
 /*
 .parse的第一个参数是要解析的字符串数组，也可以省略参数而使用process.argv。
 如果参数遵循与 node 不同的约定，可以在第二个参数中传递from选项：
