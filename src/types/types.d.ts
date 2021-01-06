@@ -13,6 +13,8 @@ declare module 'download-git-repo' {
   export = download
 }
 
+declare module '*.log'
+
 declare namespace UserSrch {
   interface Answers {
     'Project name': string

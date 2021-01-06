@@ -73,6 +73,15 @@ export const pbInfoInquire: SayaSpace.InitInquire[] = [
   }
 ]
 
+export const checkBranchInquire: SayaSpace.InitInquire[] = [
+  {
+    type: 'confirm',
+    message: '确认发布分支?(Y:提交/N:重选)',
+    name: 'checkBranch',
+    default: true
+  }
+]
+
 export const checkInfoInquire: SayaSpace.InitInquire[] = [
   {
     type: 'confirm',

@@ -4,13 +4,15 @@ import symbols from 'log-symbols'
 import chalk from 'chalk'
 import ora from 'ora'
 import inquirer from 'inquirer'
+import moment from 'moment'
 import * as path from 'path'
 
 import {
   portInquire,
   proInquire,
   pbInfoInquire,
-  checkInfoInquire
+  checkInfoInquire,
+  checkBranchInquire
 } from './inquirer'
 
 // 包位置
@@ -38,16 +40,37 @@ const appidObj: PbsxSpace.appidObj = {
 // 要发布环境对应的appid
 let appid: string
 
+// 创建logger
+const logger = new console.Console(
+  fs.createWriteStream(`${sayaPosition}/log/pbsx.log`, {
+    flags: 'a',
+    encoding: 'utf8'
+  })
+)
+
 // 接入小程序cli发布
 export const publishSmallx = async (): Promise<void> => {
   const spinner = ora(`${publishInfo.pbEnv}环境发布中...\n`)
   spinner.start()
-  const pbCommand = `${XCli} upload --project ${sayaPosition}/${proName} -v ${publishInfo.pbVersion} -d ${publishInfo.pbDesc}`
+  /* const pbCommand = `${XCli} upload --project ${sayaPosition}/${proName} -v ${publishInfo.pbVersion} -d ${publishInfo.pbDesc}`
   if (shell.exec(pbCommand, { silent: true }).code !== 0) {
     spinner.fail(`*** 发布失败 ***\n`)
     shell.exit(1)
-  }
+  } */
   spinner.succeed(`*** ${publishInfo.pbEnv}环境发布成功 ***\n`)
+  // 记录日志
+  const logInfo = `### ${moment().format('YYYY-MM-DD HH:mm:ss')}
+  - 发布端口: ${servePort}
+  - 发布环境: ${publishInfo.pbEnv}
+  - appid: ${appid}
+  - 发布版本: ${publishInfo.pbVersion}
+  - 发布描述: ${publishInfo.pbDesc}
+  `
+  logger.log(logInfo)
+  console.log(
+    symbols.info,
+    chalk.green(`进入文件查看日志: ${sayaPosition}/log/pbsx.log\n`)
+  )
 }
 
 // 根据发布信息修改文件内容
@@ -83,12 +106,22 @@ export const getPublishInfo = async (): Promise<void> => {
     // 向用户确认发布信息
     // 映射appid在确认信息中增加
     appid = appidObj[publishInfo.pbEnv]
-    shell.echo(
+    /* shell.echo(
       `您在分支 ${publishBranchName} 的发布信息如下:\n
       发布环境: ${publishInfo.pbEnv}\n
       appid: ${appid}\n
       版本号: ${publishInfo.pbVersion}\n
       发布描述: ${publishInfo.pbDesc}\n`
+    ) */
+    console.log(
+      symbols.info,
+      chalk.green(
+        `您在分支 ${publishBranchName} 的发布信息如下:\n
+        发布环境: ${publishInfo.pbEnv}\n
+        appid: ${appid}\n
+        版本号: ${publishInfo.pbVersion}\n
+        发布描述: ${publishInfo.pbDesc}\n`
+      )
     )
     // 询问是否确定
     try {
@@ -125,6 +158,46 @@ export const checkoutBranch = async (): Promise<void> => {
   getPublishInfo()
 }
 
+// 询问分支选择
+export const getSecBranch = async (branchArr: any[]): Promise<void> => {
+  // 获取要发布的分支
+  try {
+    const publishBranchAnswers = await inquirer.prompt([
+      {
+        type: 'list',
+        message: '请选择要发布的分支',
+        name: 'publishBranch',
+        choices: [
+          // choices里可以有分隔符
+          new inquirer.Separator(`*** 选项 ***`),
+          ...branchArr
+        ]
+      }
+    ])
+    publishBranchName = publishBranchAnswers.publishBranch
+    // 确认发布分支
+    try {
+      console.log(
+        symbols.info,
+        chalk.green(`发布分支为: ${publishBranchName}\n`)
+      )
+      const checkBranchAnswers = await inquirer.prompt(checkBranchInquire)
+      const { checkBranch } = checkBranchAnswers
+      if (checkBranch) {
+        // 切换至要发布的分支
+        checkoutBranch()
+      } else {
+        // 重新询问分支选择
+        getSecBranch(branchArr)
+      }
+    } catch (err) {
+      console.log(symbols.error, chalk.red(`*** 运行出错 ***:\n ${err}\n`))
+    }
+  } catch (err) {
+    console.log(symbols.error, chalk.red(`*** 运行出错 ***:\n ${err}\n`))
+  }
+}
+
 // 获取github的分支名列表以供选择
 export const getGitBranch = async (): Promise<void> => {
   const spinner = ora(`获取最新分支loading...\n`)
@@ -143,26 +216,8 @@ export const getGitBranch = async (): Promise<void> => {
     .split('origin/')
     .slice(3)
     .map((item, idx) => item.replace('\n', '').trim())
-  // 获取要发布的分支
-  try {
-    const publishBranchAnswers = await inquirer.prompt([
-      {
-        type: 'list',
-        message: '请选择要发布的分支',
-        name: 'publishBranch',
-        choices: [
-          // choices里可以有分隔符
-          new inquirer.Separator(`*** 选项 ***`),
-          ...branchArr
-        ]
-      }
-    ])
-    publishBranchName = publishBranchAnswers.publishBranch
-    // 切换至要发布的分支
-    checkoutBranch()
-  } catch (err) {
-    console.log(symbols.error, chalk.red(`*** 运行出错 ***:\n ${err}\n`))
-  }
+  // 询问分支选择
+  getSecBranch(branchArr)
 }
 
 // git拉取要发布的小程序
@@ -222,7 +277,9 @@ export const getServePort = async (): Promise<void> => {
 }
 
 /* 打开微信开发者工具 */
-export const openWechatDev = (): void => {
+export const openWechatDev = async (): Promise<void> => {
+  const file = `${sayaPosition}/log/pbsx.log`
+  await fs.ensureFileSync(file)
   /* const spinner = ora(`即将打开微信开发者工具...\n`)
   spinner.start()
   const openWechatDev = `${XCli} open`
