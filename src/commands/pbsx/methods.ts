@@ -6,14 +6,19 @@ import ora from 'ora'
 import inquirer from 'inquirer'
 import * as path from 'path'
 
-import { portInquire, proInquire, pbInfoInquire } from './inquirer'
+import {
+  portInquire,
+  proInquire,
+  pbInfoInquire,
+  checkInfoInquire
+} from './inquirer'
 
 // 包位置
 const sayaPosition = path.resolve(__dirname, '../../')
 // 定位shell命令至包位置
 const toSaya = `cd ${path.resolve(__dirname, '../../')}`
 // 小程序cli命令目录
-// const XCli = '/Applications/wechatwebdevtools.app/Contents/MacOS/./cli'
+const XCli = '/Applications/wechatwebdevtools.app/Contents/MacOS/./cli'
 // 微信开发者工具服务端口号
 let servePort: string
 // 要发布的项目名称
@@ -25,6 +30,50 @@ let publishInfo: PbsxSpace.publishInfo = {
   pbVersion: '',
   pbDesc: ''
 }
+const appidObj: PbsxSpace.appidObj = {
+  dev: 'wx18f8075163853984',
+  rc: 'wx8f94c312514f740e',
+  prod: 'wx8f94c312514f740e'
+}
+// 要发布环境对应的appid
+let appid: string
+
+// 接入小程序cli发布
+export const publishSmallx = async (): Promise<void> => {
+  const spinner = ora(`${publishInfo.pbEnv}环境发布中...\n`)
+  spinner.start()
+  const pbCommand = `${XCli} upload --project ${sayaPosition}/${proName} -v ${publishInfo.pbVersion} -d ${publishInfo.pbDesc}`
+  if (shell.exec(pbCommand, { silent: true }).code !== 0) {
+    spinner.fail(`*** 发布失败 ***\n`)
+    shell.exit(1)
+  }
+  spinner.succeed(`*** ${publishInfo.pbEnv}环境发布成功 ***\n`)
+}
+
+// 根据发布信息修改文件内容
+export const editFile = async (): Promise<void> => {
+  const spinner = ora(`发布信息准备中...\n`)
+  spinner.start()
+  if (proName === 'store-mina') {
+    // 修改config.js中第一行的环境变量
+    const editEnvCommand = `sed -i '' "1s/'.*'/'${publishInfo.pbEnv}'/g" ${sayaPosition}/${proName}/config.js`
+    if (shell.exec(editEnvCommand, { silent: true }).code !== 0) {
+      spinner.fail(`*** 发布信息准备失败 ***\n`)
+      shell.exit(1)
+    }
+    // 修改project.config.json中第36行的appid
+    const editAppidCommand = `sed -i '' '36s/"wx.*"/"${appid}"/g' ${sayaPosition}/${proName}/project.config.json`
+    if (shell.exec(editAppidCommand, { silent: true }).code !== 0) {
+      spinner.fail(`*** 发布信息准备失败 ***\n`)
+      shell.exit(1)
+    }
+    spinner.succeed(`*** 发布信息准备成功 ***\n`)
+    // 接入小程序cli发布
+    publishSmallx()
+  } else {
+    spinner.fail(`*** 发布信息准备失败，不存在该项目 ***\n`)
+  }
+}
 
 // 获取要发布的信息：环境，版本号，描述 并 向用户确认 环境，版本号，描述，appid
 export const getPublishInfo = async (): Promise<void> => {
@@ -32,12 +81,29 @@ export const getPublishInfo = async (): Promise<void> => {
     const pbInfoAnswers = await inquirer.prompt(pbInfoInquire)
     publishInfo = { ...publishInfo, ...pbInfoAnswers }
     // 向用户确认发布信息
+    // 映射appid在确认信息中增加
+    appid = appidObj[publishInfo.pbEnv]
     shell.echo(
-      `您在分支 ${publishBranchName} 的发布信息如下:\n发布环境: ${publishInfo.pbEnv}\n版本号: ${publishInfo.pbVersion}\n发布描述: ${publishInfo.pbDesc}\n`
+      `您在分支 ${publishBranchName} 的发布信息如下:\n
+      发布环境: ${publishInfo.pbEnv}\n
+      appid: ${appid}\n
+      版本号: ${publishInfo.pbVersion}\n
+      发布描述: ${publishInfo.pbDesc}\n`
     )
-    // todo
-    // 映射appid在上面一行确认信息中增加
     // 询问是否确定
+    try {
+      const checkInfoAnswers = await inquirer.prompt(checkInfoInquire)
+      const { checkInfo } = checkInfoAnswers
+      if (checkInfo) {
+        // 根据发布信息修改文件内容
+        editFile()
+      } else {
+        // 重新输入发布信息
+        getPublishInfo()
+      }
+    } catch (err) {
+      console.log(symbols.error, chalk.red(`*** 运行出错 ***:\n ${err}\n`))
+    }
     // 确定则进入发布流程
     // 不确定则重新执行getPublishInfo
   } catch (err) {
@@ -146,8 +212,8 @@ export const getServePort = async (): Promise<void> => {
   )
   try {
     // 获取服务端口号
-    /* const portAnswers = await inquirer.prompt(portInquire)
-    servePort = portAnswers.servePort */
+    const portAnswers = await inquirer.prompt(portInquire)
+    servePort = portAnswers.servePort
     // 选择要发布的小程序
     getProject()
   } catch (err) {

@@ -4,4 +4,11 @@ declare namespace PbsxSpace {
     pbVersion: string
     pbDesc: string
   }
+
+  interface appidObj {
+    dev: string
+    rc: string
+    prod: string
+    [propName: string]: string
+  }
 }

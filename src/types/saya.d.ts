@@ -3,7 +3,7 @@ declare namespace SayaSpace {
     type: string
     name: string
     message: string
-    default?: string
+    default?: string | boolean
     choices?: any[]
     validate?: (val: string) => string | boolean
   }

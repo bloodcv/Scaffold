@@ -72,3 +72,12 @@ export const pbInfoInquire: SayaSpace.InitInquire[] = [
     }
   }
 ]
+
+export const checkInfoInquire: SayaSpace.InitInquire[] = [
+  {
+    type: 'confirm',
+    message: '确认提交?(Y:提交/N:重填)',
+    name: 'checkInfo',
+    default: true
+  }
+]
