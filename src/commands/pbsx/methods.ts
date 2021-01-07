@@ -52,11 +52,11 @@ const logger = new console.Console(
 export const publishSmallx = async (): Promise<void> => {
   const spinner = ora(`${publishInfo.pbEnv}环境发布中...\n`)
   spinner.start()
-  /* const pbCommand = `${XCli} upload --project ${sayaPosition}/${proName} -v ${publishInfo.pbVersion} -d ${publishInfo.pbDesc}`
+  const pbCommand = `${XCli} upload --project ${sayaPosition}/${proName} -v ${publishInfo.pbVersion} -d ${publishInfo.pbDesc}`
   if (shell.exec(pbCommand, { silent: true }).code !== 0) {
     spinner.fail(`*** 发布失败 ***\n`)
     shell.exit(1)
-  } */
+  }
   spinner.succeed(`*** ${publishInfo.pbEnv}环境发布成功 ***\n`)
   // 记录日志
   const logInfo = `### ${moment().format('YYYY-MM-DD HH:mm:ss')}
