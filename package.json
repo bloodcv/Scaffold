@@ -1,6 +1,6 @@
 {
 	"name": "bloodcv",
-	"version": "1.1.2",
+	"version": "1.1.3",
 	"description": "脚手架项目 npm下是脚手架脚本 其他对应分支下是相应的模版",
 	"main": "index.js",
 	"scripts": {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { openWechatDev } from './methods'
+import { getProject } from './methods'
 
 module.exports = () => {
-  /* 打开微信开发者工具 */
-  openWechatDev()
+  // 获取要发布的小程序项目名称
+  getProject()
 }

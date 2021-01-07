@@ -8,7 +8,7 @@ import moment from 'moment'
 import * as path from 'path'
 
 import {
-  portInquire,
+  // portInquire,
   proInquire,
   pbInfoInquire,
   checkInfoInquire,
@@ -22,7 +22,7 @@ const toSaya = `cd ${path.resolve(__dirname, '../../')}`
 // 小程序cli命令目录
 const XCli = '/Applications/wechatwebdevtools.app/Contents/MacOS/./cli'
 // 微信开发者工具服务端口号
-let servePort: string
+// let servePort: string
 // 要发布的项目名称
 let proName: string
 // 要发布的git分支名称
@@ -60,7 +60,6 @@ export const publishSmallx = async (): Promise<void> => {
   spinner.succeed(`*** ${publishInfo.pbEnv}环境发布成功 ***\n`)
   // 记录日志
   const logInfo = `### ${moment().format('YYYY-MM-DD HH:mm:ss')}
-  - 发布端口: ${servePort}
   - 发布环境: ${publishInfo.pbEnv}
   - appid: ${appid}
   - 发布版本: ${publishInfo.pbVersion}
@@ -236,6 +235,8 @@ export const getProByGit = async (): Promise<void> => {
 
 // 获取要发布的小程序项目名称
 export const getProject = async (): Promise<void> => {
+  const file = `${sayaPosition}/log/pbsx.log`
+  fs.ensureFileSync(file)
   try {
     const proNameAnswers = await inquirer.prompt(proInquire)
     proName = proNameAnswers.proName
@@ -261,7 +262,7 @@ export const getProject = async (): Promise<void> => {
 }
 
 /* 询问开发者工具服务端口号 */
-export const getServePort = async (): Promise<void> => {
+/* export const getServePort = async (): Promise<void> => {
   shell.echo(
     `请打开微信开发者工具-->设置-->安全设置-->服务端口, 并记下端口号\n`
   )
@@ -274,19 +275,17 @@ export const getServePort = async (): Promise<void> => {
   } catch (err) {
     console.log(symbols.error, chalk.red(`*** 运行出错 ***:\n ${err}\n`))
   }
-}
+} */
 
 /* 打开微信开发者工具 */
-export const openWechatDev = async (): Promise<void> => {
-  const file = `${sayaPosition}/log/pbsx.log`
-  await fs.ensureFileSync(file)
-  /* const spinner = ora(`即将打开微信开发者工具...\n`)
+/* export const openWechatDev = async (): Promise<void> => {
+  const spinner = ora(`即将打开微信开发者工具...\n`)
   spinner.start()
   const openWechatDev = `${XCli} open`
   if (shell.exec(openWechatDev).code !== 0) {
     spinner.fail('*** 打开微信开发者工具失败 ***')
     shell.exit(1)
   }
-  spinner.succeed('*** 打开微信开发者工具成功 ***') */
+  spinner.succeed('*** 打开微信开发者工具成功 ***')
   getServePort()
-}
+} */
