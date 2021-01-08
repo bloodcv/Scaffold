@@ -237,6 +237,7 @@ export const getProByGit = async (): Promise<void> => {
 export const getProject = async (): Promise<void> => {
   const file = `${sayaPosition}/log/pbsx.log`
   fs.ensureFileSync(file)
+  shell.echo(`请打开微信开发者工具服务端口：设置-->安全设置-->服务端口\n`)
   try {
     const proNameAnswers = await inquirer.prompt(proInquire)
     proName = proNameAnswers.proName
