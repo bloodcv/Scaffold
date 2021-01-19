@@ -43,6 +43,7 @@ export const pbInfoInquire: SayaSpace.InitInquire[] = [
       // choices里可以有分隔符
       new inquirer.Separator(`*** 选项 ***`),
       'dev',
+      'fat',
       'rc',
       'prod'
     ]

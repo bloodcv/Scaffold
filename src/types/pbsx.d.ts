@@ -7,6 +7,7 @@ declare namespace PbsxSpace {
 
   interface appidObj {
     dev: string
+    fat: string
     rc: string
     prod: string
     [propName: string]: string

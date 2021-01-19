@@ -34,6 +34,7 @@ let publishInfo: PbsxSpace.publishInfo = {
 }
 const appidObj: PbsxSpace.appidObj = {
   dev: 'wx18f8075163853984',
+  fat: 'wx18f8075163853984',
   rc: 'wx8f94c312514f740e',
   prod: 'wx8f94c312514f740e'
 }
